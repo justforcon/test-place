@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<title>传入参数测试接口</title>
+		<script type="text/javascript" src="../lib/jquery.min.js"></script>
+		<script type="text/javascript" src="angular.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#subm").click(function(){
+				var url=$("#urlLink").val();
+				var method=$('#requestMethod').val();
+				htmlobj = $.ajax({
+							url : url,
+							method : $('#requestMethod').val(),
+							beforeSend: function (xhr) {
+						           xhr.setRequestHeader("Authorization", "bearer "+$("#requestHeader").val());
+						       },
+							contentType:$("#ctype").val(),
+							async : false,
+							data : changeType()
+						});
+						var str=htmlobj.responseText;
+// 						console.log(str);
+						if(!str){
+							$("#ta").val("无返回值");
+						}
+						else{
+							$("#ta").val(str);
+						}
+
+				});
+				$("#paraAdd").click(function() {
+					addPara($('#paraAdd'));
+				});
+			});
+			function addPara(obj){
+				obj.before('<div class="paras"><span>参数名称</span><input type="text"/><span>参数值</span><input type="text"/><input type="button" onclick="removePara($(this));" value="删除该参数"/></div>');
+			}
+			function processPara(paras){
+				var str='[{';
+				if(!paras||paras.length==0){
+					return '';
+				}
+				paras.each(
+						  function(){
+							  var map=$(this).find('input');
+							  str=str+'"'+map.eq(0).val()+'":"'+map.eq(1).val().replace(/\"/g,'\\"') +'",';
+						  }
+						);
+				return str.substring(0,str.length-1)+"}]";
+			}
+			function removePara(obj){
+				obj.parent().remove();
+			}
+			function changeType(){
+				if($("#requestMethod").val()=="GET")
+					$('#ctype').val("");
+				if($('#ctype').val()=='application/json'){
+	// 					console.log($('#bodyParas textarea').val());
+						return $('#bodyParas  textarea').val();
+					}
+					return eval(processPara($('.paras')))[0];
+			}
+			function onTypeChange(){
+				if($('#ctype').val()=='application/x-www-form-urlencoded'){
+					$('#sepParas').show();
+					$('#bodyParas').hide();
+					}
+				else{
+						$('#sepParas').hide();
+						$('#bodyParas').show();
+					}
+			}
+
+		</script>
+	</head>
+	<body>
+		<h3>资源链接及请求方法</h3>
+	 	<div><input id="urlLink" style="width:800px;" value="https://localhost:8080/datacans/api/v1/" type="text"/><select id="requestMethod"><option>POST</option><option>GET</option></select></div>
+	 	<input type="text" id="requestHeader"/>
+		<div><span>参数</span><select id="ctype" value="" onchange="onTypeChange()"><option>application/x-www-form-urlencoded</option><option>application/json</option></select></div>
+		<div id="sepParas"><div class="paras"><span>参数名称</span><input type="text"/><span>参数值</span><input type="text"/><input type="button" onclick="removePara($(this));" value="删除该参数"/></div>
+		<div class="paras"><span>参数名称</span><input type="text"/><span>参数值</span><input type="text"/><input type="button" onclick="removePara($(this));" value="删除该参数"/></div>
+		<input type="button" style="display:block" id="paraAdd"  value="点击添加请求参数" />
+		</div>
+		<div id="bodyParas" style="display:none">
+			<textarea style="display:block" rows="30" cols="100" ></textarea>
+		</div>
+		<input type="button" id="subm" style="dispaly:block;width:200px;height:100px;background:#6DB33F;color:#fff;border-radius:10px;font-size:40px;cursor:pointer;margin-top:40px;" value="请求"/>
+		<textarea style="display:block" rows="30" cols="100" id="ta">返回结果</textarea>
+	</body>
+</html>

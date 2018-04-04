@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<title>传入参数测试接口</title>
+		<script type="text/javascript" src="jquery.min.js"></script>
+		 
+	</head>
+	<body>
+		<h3>请求图片，橙色线条为边框</h3>
+		<textarea id="lik" cols=100 rows=10 type="text"></textarea>
+		<span>放大倍数（100表示100%）</span><input type="text" id="zoom"/><span>路径</span><input id="path" type="text"/>
+		<input id="sumt" style="display:block" value="确定"type="button"/>
+		<script type="text/javascript">
+		
+		$('#sumt').click(function(){
+				$('#tar').attr('src','');
+				var req='http://localhost:8081?url='+escape($('#lik').val())+'&zoom='+$('#zoom').val()+'&rpath='+escape($('#path').val());
+				console.log(req);
+				$('#tar').attr('src',req);
+			}
+		);
+		</script>
+<div>
+		<img style="border:3px solid orange;" id="tar" src=""/>
+ </div>
+	 	 
+	</body>
+</html>
