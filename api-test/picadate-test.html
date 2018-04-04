@@ -3,15 +3,22 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<link rel="stylesheet" href="../lib/picadate/themes/classic.css"/>
 		<script type="text/javascript" src="../lib/jquery.min.js"></script>
 		<script type="text/javascript" src="../lib/picadate/picker.js"></script>
 		<script type="text/javascript" src="../lib/picadate/picker.date.js"></script>
-		<script type="text/javascript" >
-			$('.datepicker').pickadate()
-		</script>
+		<script type="text/javascript" src="../lib/picadate/picker.time.js"></script>
+
 	</head>
 	<body>
 		<h3>资源链接及请求方法</h3>
   	<input type="text" class="datepicker" id="input_from">
+		<input type="text" class="timepicker" id="input_from">
+		<script type="text/javascript" >
+				$('.datepicker').pickadate({
+  			weekdaysShort: ['周日', '周一', '周三', '周三', '周四', '周五', '周六'],
+  			showMonthsShort: true});
+				$('.timepicker').pickatime();
+		</script>
 	</body>
 </html>
