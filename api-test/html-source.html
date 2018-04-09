@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<title>传入参数测试接口</title>
+		<script type="text/javascript" src="../lib/jquery.min.js"></script>
+	</head>
+	<body>
+		<textarea id="raw" cols=100 rows=2 type="text"></textarea>
+		<input id="getLink" style="display:block" value="确定"type="button"/>
+		<textarea id="lik" cols=100 rows=2 type="text"></textarea>
+		<input id="sumt" style="display:block" value="获取跳转后链接"type="button"/>
+		<input id="clear" style="display:block" onclick="$('#ta').val('');" value="清除"type="button"/>
+		<script type="text/javascript">
+		String.prototype.replaceAll = function(s1,s2){
+		　　return this.replace(new RegExp(s1,"gm"),s2);
+	};
+		$('#sumt').click(function(){
+				var req='http://datacans.com:8081/html?url='+encodeURI($('#lik').val()+"&opt=link");
+				htmlobj = $.ajax({
+							url : req,
+							method : 'GET',
+							async : false
+				});
+				var str=htmlobj.responseText;
+// 						console.log(str);
+				if(!str){
+					$("#ta").val("无返回值");
+				}
+				else{
+					// str=str.replace(/\\n{2,}/,'\n');
+					//str=str.replaceAll(/<script([\w\W](?!\<\/script\>))*[\w\W]<\/script>/,'');
+					 // $("#frame")[0].innerHTML=str.replaceAll(/(?:('|"))\/\//,'http://');
+					 // console.log(htmlobj)
+					 // alert(htmlobj.getAllResponseHeaders());
+					 // alert(htmlobj.responseText);
+					 $("#ta").val(htmlobj.responseText);
+					 // alert(str);
+					// $("#ta").outerHTML=str;.val(str);
+				}
+			}
+		);
+		$('#getLink').click(function(){
+				var req='https://localhost:8080/TeT/extractLink?url='+encodeURI($('#raw').val()+"&opt=link");
+				htmlobj = $.ajax({
+							url : req,
+							method : 'GET',
+							async : false
+				});
+				var str=htmlobj.responseText;
+// 						console.log(str);
+				if(!str){
+					$("#lik").val("无返回值");
+				}
+				else{
+					 $("#lik").val(htmlobj.responseText);
+				}
+			}
+		);
+		</script>
+		<div id='frame' style="position: relative;width:100%">
+			<textarea style="display:block" rows="30" cols="100" id="ta">返回结果</textarea>
+ 		</div>
+	</body>
+</html>
