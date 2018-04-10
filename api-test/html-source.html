@@ -16,7 +16,8 @@
 		　　return this.replace(new RegExp(s1,"gm"),s2);
 	};
 		$('#sumt').click(function(){
-				var req='http://datacans.com:8081/html?url='+encodeURI($('#lik').val()+"&opt=link");
+				var req='https://datacans.com:8080/datacans/api/v1/dataSource/fetchHtmlSource?url='+encodeURIComponent($('#lik').val())+"&opt=link";
+				console.log(req);
 				htmlobj = $.ajax({
 							url : req,
 							method : 'GET',
@@ -41,7 +42,8 @@
 			}
 		);
 		$('#getLink').click(function(){
-				var req='https://localhost:8080/TeT/extractLink?url='+encodeURI($('#raw').val()+"&opt=link");
+				var req='https://datacans.com:8080/TeT/extractLink?url='+encodeURIComponent($('#raw').val());
+				console.log(req);
 				htmlobj = $.ajax({
 							url : req,
 							method : 'GET',
